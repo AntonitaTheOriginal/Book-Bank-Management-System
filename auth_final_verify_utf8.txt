@@ -1,0 +1,39 @@
+﻿=== BBMS Authentication Diagnostic Tool ===
+Testing Login for: ADMIN001
+Using Password: Admin@123
+java : Exception in 
+thread "main" java.lan
+g.IllegalArgumentExcep
+tion: Invalid salt 
+version
+At line:1 char:1
++ java -cp "target/cla
+sses;C:\Users\hp\.m2\r
+epository\org\mindrot\
+jbcry ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Exception    
+ in th...id salt v    
+ersion:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+	at org.mindrot.jbcryp
+t.BCrypt.hashpw(BCrypt
+.java:659)
+	at org.mindrot.jbcryp
+t.BCrypt.checkpw(BCryp
+t.java:764)
+	at com.bbms.service.A
+uthService.authenticat
+e(AuthService.java:36)
+	at com.bbms.util.Auth
+Tester.main(AuthTester
+.java:18)
