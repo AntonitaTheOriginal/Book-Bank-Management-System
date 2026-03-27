@@ -769,4 +769,3 @@ mail.from=bbms@university.edu
 
 ---
 
-*Document generated: 2026-03-27 | BBMS v1.0*
