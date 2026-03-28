@@ -97,6 +97,10 @@ public class UserServlet extends HttpServlet {
 
             } else if ("edit".equals(action)) {
                 User u = buildUser(req);
+                // ADMIN001 must always remain an ADMIN regardless of submitted value
+                if ("ADMIN001".equals(u.getUserId())) {
+                    u.setUserType(User.UserType.ADMIN);
+                }
                 userDAO.updateUser(u);
                 session.setAttribute("flash", "User updated successfully.");
                 resp.sendRedirect(req.getContextPath() + "/users");

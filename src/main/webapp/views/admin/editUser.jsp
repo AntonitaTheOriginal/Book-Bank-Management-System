@@ -53,11 +53,22 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">User Type *</label>
-                    <select name="userType" class="form-control" required>
-                        <option value="STUDENT"  ${editUser.userType == 'STUDENT'  ? 'selected' : ''}>Student</option>
-                        <option value="FACULTY"  ${editUser.userType == 'FACULTY'  ? 'selected' : ''}>Faculty</option>
-                        <option value="ADMIN"    ${editUser.userType == 'ADMIN'    ? 'selected' : ''}>Admin</option>
-                    </select>
+                    <c:choose>
+                        <c:when test="${editUser.userId == 'ADMIN001'}">
+                            <%-- ADMIN001 type is permanently locked to ADMIN --%>
+                            <input type="hidden" name="userType" value="ADMIN">
+                            <div class="form-control" style="background:#f0f0f0; color:#555; cursor:not-allowed;">
+                                🔒 Admin <span class="text-muted" style="font-size:0.85em;">(locked – cannot be changed)</span>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <select name="userType" class="form-control" required>
+                                <option value="STUDENT"  ${editUser.userType == 'STUDENT'  ? 'selected' : ''}>Student</option>
+                                <option value="FACULTY"  ${editUser.userType == 'FACULTY'  ? 'selected' : ''}>Faculty</option>
+                                <option value="ADMIN"    ${editUser.userType == 'ADMIN'    ? 'selected' : ''}>Admin</option>
+                            </select>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
