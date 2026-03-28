@@ -46,6 +46,12 @@ public class BookService {
             return "ERROR: User has reached the maximum borrowing limit of "
                     + user.getBorrowingLimit() + " books.";
 
+        // Duplicate-borrow check: same user cannot borrow the same book twice
+        Transaction existing = transactionDAO.getActiveTransaction(userId, bookId);
+        if (existing != null)
+            return "ERROR: This user already has an active loan for this book (Transaction ID: "
+                   + existing.getTransactionId() + ").";
+
         Book book = bookDAO.getBookById(bookId);
         if (book == null) return "ERROR: Book not found.";
         if (!book.isAvailable()) return "ERROR: No copies available for this book.";

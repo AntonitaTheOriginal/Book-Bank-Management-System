@@ -45,8 +45,15 @@
                                 <td>${u.registrationDate}</td>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/users?action=edit&id=${u.userId}" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="${pageContext.request.contextPath}/users?action=delete&id=${u.userId}" class="btn btn-danger btn-sm"
-                                       onclick="return confirm('Remove this user?')">Delete</a>
+                                    <c:choose>
+                                        <c:when test="${u.userId == 'ADMIN001'}">
+                                            <span class="badge badge-secondary" title="Primary admin cannot be deleted">🔒 Protected</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/users?action=delete&id=${u.userId}" class="btn btn-danger btn-sm"
+                                               onclick="return confirm('Remove this user?')">Delete</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>

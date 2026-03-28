@@ -33,7 +33,17 @@ public class TransactionServlet extends HttpServlet {
             switch (action) {
                 case "issue":
                     requireAdmin(user, resp); if (resp.isCommitted()) return;
-                    req.setAttribute("books", bookService.getAllBooks());
+                    // Only show books that have at least 1 copy available
+                    req.setAttribute("books", bookService.getAllBooks().stream()
+                            .filter(b -> b.getAvailableCopies() > 0)
+                            .collect(java.util.stream.Collectors.toList()));
+                    // If a userId is typed in the URL / form, load that user's transactions
+                    String filterUserId = req.getParameter("userId");
+                    if (filterUserId != null && !filterUserId.isBlank()) {
+                        req.setAttribute("userTransactions",
+                                transactionDAO.getTransactionsByUser(filterUserId.trim()));
+                        req.setAttribute("filterUserId", filterUserId.trim());
+                    }
                     req.getRequestDispatcher("/views/admin/issueBook.jsp").forward(req, resp);
                     break;
 
@@ -84,7 +94,14 @@ public class TransactionServlet extends HttpServlet {
                 
                 if (userId == null || bIdStr == null || bIdStr.isBlank()) {
                     req.setAttribute("error", "User ID and Book ID are required.");
-                    req.setAttribute("books", bookService.getAllBooks());
+                    req.setAttribute("books", bookService.getAllBooks().stream()
+                            .filter(b -> b.getAvailableCopies() > 0)
+                            .collect(java.util.stream.Collectors.toList()));
+                    if (userId != null && !userId.isBlank()) {
+                        req.setAttribute("filterUserId", userId.trim());
+                        req.setAttribute("userTransactions",
+                                transactionDAO.getTransactionsByUser(userId.trim()));
+                    }
                     req.getRequestDispatcher("/views/admin/issueBook.jsp").forward(req, resp);
                     return;
                 }
@@ -98,12 +115,22 @@ public class TransactionServlet extends HttpServlet {
                         resp.sendRedirect(req.getContextPath() + "/transactions");
                     } else {
                         req.setAttribute("error", result.split(":", 2)[1].trim());
-                        req.setAttribute("books", bookService.getAllBooks());
+                        req.setAttribute("books", bookService.getAllBooks().stream()
+                                .filter(b -> b.getAvailableCopies() > 0)
+                                .collect(java.util.stream.Collectors.toList()));
+                        req.setAttribute("filterUserId", userId);
+                        req.setAttribute("userTransactions",
+                                transactionDAO.getTransactionsByUser(userId));
                         req.getRequestDispatcher("/views/admin/issueBook.jsp").forward(req, resp);
                     }
                 } catch (NumberFormatException e) {
                     req.setAttribute("error", "Invalid Book ID format.");
-                    req.setAttribute("books", bookService.getAllBooks());
+                    req.setAttribute("books", bookService.getAllBooks().stream()
+                            .filter(b -> b.getAvailableCopies() > 0)
+                            .collect(java.util.stream.Collectors.toList()));
+                    req.setAttribute("filterUserId", userId);
+                    req.setAttribute("userTransactions",
+                            transactionDAO.getTransactionsByUser(userId));
                     req.getRequestDispatcher("/views/admin/issueBook.jsp").forward(req, resp);
                 }
 

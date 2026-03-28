@@ -44,8 +44,13 @@ public class UserServlet extends HttpServlet {
                     break;
 
                 case "delete":
-                    userDAO.deleteUser(req.getParameter("id"));
-                    session.setAttribute("flash", "User removed successfully.");
+                    String delId = req.getParameter("id");
+                    if ("ADMIN001".equals(delId)) {
+                        session.setAttribute("flash", "Error: The primary admin account (ADMIN001) cannot be deleted.");
+                    } else {
+                        userDAO.deleteUser(delId);
+                        session.setAttribute("flash", "User removed successfully.");
+                    }
                     resp.sendRedirect(req.getContextPath() + "/users");
                     break;
 
