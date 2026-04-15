@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="MyTestSuite" verbose="1" parallel="none">
+
+  <test name="SmokeTests">
+    <classes>
+      <class name="com.automation.tests.FirstTestNGTest">
+        <methods>
+          <include name="verifyTitle"/>
+          <include name="verifyUrl"/>
+        </methods>
+      </class>
+      <class name="com.automation.tests.BBMSTests"/>
+    </classes>
+  </test>
+
+</suite>
